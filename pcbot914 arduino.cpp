@@ -1,5 +1,5 @@
 //calculer combien de mm roue parcours pour 1 tour moteur stepper
-//4.8 tours stepper = 1 tour roue (32.92cm)
+//4.8 tours stepper = 1 tour roue (31.92cm)
 //6.85833cm/ tour stepper
 //
 //calculer combien de steps de moteur pour effectuer 1m
@@ -11,11 +11,7 @@
 //modéliser robot en 3d pour faire urdf
 //not yet
 //3200 steps par revolution
-//ODrive
-#include <ODriveArduino.h>
-
-//ODrive Objects
-ODriveArduino odrive1(Serial1);
+//trouver nb de steps par radian
 
 //ROS
 #include "ros.h"
@@ -49,9 +45,6 @@ unsigned long currentMillis;
 long previousMillis = 0;    // set up timers
 float loopTime = 10;
 
-// ODrive init stuff
-//int button;
-//int requested_state;
 
 // output variables to drive the ODrive
 int forward0;
@@ -95,12 +88,6 @@ void setup() {
   nh.subscribe(sub);          // subscribe to cmd_vel
   nh.advertise(odom_pub);
   broadcaster.init(nh);       // set up broadcaster
-
-  pinMode(2, INPUT_PULLUP);   // ODrive init switch
-
-  Serial1.begin(115200);    // ODrive
-  Serial6.begin(115200);    // debug port using a USB-serial adapter (Serial-zero is in use by ros_serial
-
 }
 
 // ** Main loop **
@@ -113,18 +100,13 @@ void loop() {
         if (currentMillis - previousMillis >= loopTime) {  // run a loop every 10ms          
             previousMillis = currentMillis;          // reset the clock to time it
 
-            //button = digitalRead(2);                 // init ODrive
-            //if (button == 0) {
-           //   OdriveInit1();
-            //} 
-
             float modifier_lin = 1.03;        // scaling factor because the wheels are squashy / there is wheel slip etc.
             float modifier_ang = 0.92;        // scaling factor because the wheels are squashy / there is wheel slip etc.
 
 //modifier 83466 pour nb de steps pour 1m
 //modifier 15091 pour nb de steps par radian
-            forward0 = demandx * (83466 * modifier_lin) ; // convert m/s into counts/s
-            forward1 = demandx * (83466 * modifier_lin); // convert m/s into counts/s
+            forward0 = demandx * (46658 * modifier_lin) ; // convert m/s into counts/s
+            forward1 = demandx * (46658 * modifier_lin); // convert m/s into counts/s
 
             turn0 = demandz * (15091 * modifier_ang);    // convert rads/s into counts/s
             turn1 = demandz * (15091 * modifier_ang);    // convert rads/s into counts/s
@@ -148,8 +130,8 @@ void loop() {
     
             // calc mm from encoder counts
     //modifier 83.44 pour le nb de steps par mm
-            pos0_mm_diff = pos0_diff / 83.44;
-            pos1_mm_diff = pos1_diff / 83.44;
+            pos0_mm_diff = pos0_diff / 46.66;
+            pos1_mm_diff = pos1_diff / 46.66;
 
             // calc distance travelled based on average of both wheels
             pos_average_mm_diff = (pos0_mm_diff + pos1_mm_diff) / 2;   // difference in each cycle
