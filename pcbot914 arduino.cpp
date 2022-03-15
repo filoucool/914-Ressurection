@@ -1,10 +1,16 @@
 //calculer combien de mm roue parcours pour 1 tour moteur stepper
+//4.8 tours stepper = 1 tour roue (32.92cm)
+//6.85833cm/ tour stepper
+//
 //calculer combien de steps de moteur pour effectuer 1m
-//distance entre millieu des 2 roues
-//calculer circonférence des roues
+//46658.56624 steps
+//distance entre millieu des 2 roues  
+//27cm
+//calculer circonférence des roues  
+//10.16cm
 //modéliser robot en 3d pour faire urdf
-
-
+//not yet
+//3200 steps par revolution
 //ODrive
 #include <ODriveArduino.h>
 
