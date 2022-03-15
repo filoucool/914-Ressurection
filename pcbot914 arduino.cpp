@@ -115,20 +115,22 @@ void loop() {
             float modifier_lin = 1.03;        // scaling factor because the wheels are squashy / there is wheel slip etc.
             float modifier_ang = 0.92;        // scaling factor because the wheels are squashy / there is wheel slip etc.
 
-//modifier 83466
+//modifier 83466 pour nb de steps pour 1m
+//modifier 15091 pour nb de steps par radian
             forward0 = demandx * (83466 * modifier_lin) ; // convert m/s into counts/s
             forward1 = demandx * (83466 * modifier_lin); // convert m/s into counts/s
 
             turn0 = demandz * (15091 * modifier_ang);    // convert rads/s into counts/s
             turn1 = demandz * (15091 * modifier_ang);    // convert rads/s into counts/s
 
+//????
             forward1 = forward1*-1;      // one motor and encoder is mounted facing the other way
 
             odrive1.SetVelocity(0, forward0 + turn0); 
             odrive1.SetVelocity(1, forward1 + turn1);
 
             // get positions and velocities from ODrive
-
+//enlever
             pos0 = (odrive1.GetPosition(1)) *-1;                   
             pos1 = odrive1.GetPosition(0);   
 
@@ -139,6 +141,7 @@ void loop() {
             pos1_old = pos1;
     
             // calc mm from encoder counts
+    //modifier 83.44 pour le nb de steps par mm
             pos0_mm_diff = pos0_diff / 83.44;
             pos1_mm_diff = pos1_diff / 83.44;
 
